@@ -1,0 +1,61 @@
+<h1>Обратная связь</h1>
+<form id="contact-form">
+    <label for="name">Имя:</label>
+    <input type="text" id="name" required>
+    <span class="error" id="name-error"></span><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <span class="error" id="email-error"></span><br>
+
+    <label for="message">Сообщение:</label>
+    <textarea id="message" required></textarea>
+    <span class="error" id="message-error"></span><br>
+
+    <button type="submit">Отправить</button>
+</form>
+<div class="notification" id="form-notification"></div>
+<ul id="messages-list"></ul>
+
+<script>
+    const form = document.getElementById('contact-form');
+    const messagesList = document.getElementById('messages-list');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        let isValid = true;
+        document.querySelectorAll('.error').forEach(span => span.textContent = '');
+        
+        if (!form.name.value) {
+            document.getElementById('name-error').textContent = 'Пожалуйста, введите имя.';
+            isValid = false;
+        }
+        if (!form.email.value) {
+            document.getElementById('email-error').textContent = 'Пожалуйста, введите email.';
+            isValid = false;
+        }
+        if (!form.message.value) {
+            document.getElementById('message-error').textContent = 'Пожалуйста, введите сообщение.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            const messageItem = document.createElement('li');
+            messageItem.textContent = form.message.value;
+            messagesList.appendChild(messageItem);
+
+            showNotification('Форма успешно отправлена!');
+            form.reset();
+        }
+    });
+
+    function showNotification(message) {
+        const notification = document.getElementById('form-notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
+    }
+</script>
